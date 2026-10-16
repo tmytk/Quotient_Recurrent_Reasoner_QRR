@@ -5,10 +5,10 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from models.layers import RotaryEmbedding, CastedEmbedding, CastedLinear
-from models.sparse_embedding import CastedSparseEmbedding
-from models.config import QRRConfig
-from models.integrator import QuotientIntegrator, _GeoIntegrator
+from .layers import RotaryEmbedding, CastedEmbedding, CastedLinear
+from .sparse_embedding import CastedSparseEmbedding
+from .config import QRRConfig
+from .integrator import QuotientIntegrator, _GeoIntegrator
 
 IGNORE_LABEL_ID = -100
 
@@ -66,11 +66,11 @@ class QRRModelInner(nn.Module):
         # Reasoning trunk: the gauge-equivariant transformer.
         assert bool(getattr(self.config, "gauge_trunk", False)), \
             "the release ships the gauge trunk only"
-        from models.gauge_transformer import GaugeFixedPointTransformer
+        from .gauge_transformer import GaugeFixedPointTransformer
         self.L_level = GaugeFixedPointTransformer(self.config, self.config.L_layers)
 
         # Invariant readouts (rich features + feature RMSNorm -- 'rich_rms').
-        from models.gauge_layers import GaugeReadout
+        from .gauge_layers import GaugeReadout
         hc = self.config.hidden_size // 2
         assert str(getattr(self.config, "gauge_readout", "rich_rms")) == "rich_rms", \
             "the release ships the rich_rms readout only"

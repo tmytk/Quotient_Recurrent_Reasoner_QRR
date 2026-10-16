@@ -81,7 +81,7 @@ class _RmsNormFn(torch.autograd.Function):
 def rms_norm_fused(h, variance_epsilon: float):
     """Drop-in for models.layers.rms_norm on fp32 CUDA tensors; falls back otherwise."""
     if not (h.is_cuda and h.dtype == torch.float32):
-        from models.layers import rms_norm as _ref
+        from .layers import rms_norm as _ref
         return _ref(h, variance_epsilon)
     return _RmsNormFn.apply(h, variance_epsilon)
 
@@ -171,8 +171,8 @@ def residual_update(hc, f, a, b):
 def norm_c(hc, eps: float):
     """rms_norm over the real view of a complex tensor, without the to_r/to_c round-trip."""
     if not (hc.is_cuda and hc.dtype == torch.complex64):
-        from models.layers import rms_norm as _ref
-        from models.gauge_layers import to_c, to_r
+        from .layers import rms_norm as _ref
+        from .gauge_layers import to_c, to_r
         return to_c(_ref(to_r(hc), variance_epsilon=eps))
     xr = torch.view_as_real(hc).reshape(*hc.shape[:-1], hc.shape[-1] * 2)
     y = _RmsNormFn.apply(xr, eps)

@@ -16,9 +16,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.common import trunc_normal_init_
-from models.layers import rms_norm
-from models.rng_streams import new_param
+from .common import trunc_normal_init_
+from .layers import rms_norm
+from .rng_streams import new_param
 
 # Fixed implementation choices:
 #   * every complex GLinear GEMM runs as ONE interleaved block-real fp32 GEMM

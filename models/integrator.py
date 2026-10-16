@@ -1,7 +1,7 @@
 import math
 import torch
 import torch.nn as nn
-from models.common import trunc_normal_init_
+from .common import trunc_normal_init_
 
 
 class _GeoIntegrator(nn.Module):
@@ -202,7 +202,7 @@ class QuotientIntegrator(_GeoIntegrator):
         Python branch (the controller's torch.where lives in _finish): pretrain.py
         all-reduces every param whose grad is not None, so values may differ across ranks
         but control flow must not."""
-        from models.gauge_fused_step import FUSED as _FUSED, fused_core as _fused
+        from .gauge_fused_step import FUSED as _FUSED, fused_core as _fused
         _fusable_proj = self.proj_force or (_FUSED_PROJOFF and not self.proj_c1)
         if (_FUSED and _fusable_proj and m_flat is not None
                 and y_flat.is_cuda and y_flat.dtype == torch.float32):

@@ -13,9 +13,9 @@ import math
 import torch
 import torch.nn as nn
 
-from models.layers import rms_norm
-import models.gauge_fuse_pw as GFP
-from models.gauge_layers import (to_c, to_r, GaugeAttention, GaugeConv, GaugeSwiGLU,
+from .layers import rms_norm
+from . import gauge_fuse_pw as GFP
+from .gauge_layers import (to_c, to_r, GaugeAttention, GaugeConv, GaugeSwiGLU,
                                  GLinear, soft_dressing, gram_connection_parts)
 
 PG_ITERS = 30      # power-iteration depth for the pure-gauge factorization
